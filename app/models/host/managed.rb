@@ -480,7 +480,8 @@ class Host::Managed < Host::Base
   def self.provision_methods
     {
       'build' => N_('Network Based'),
-      'image' => N_('Image Based')
+      'image' => N_('Image Based'),
+			'hybrid' => N_('Image Based Network')
     }.merge(registered_provision_methods)
   end
 

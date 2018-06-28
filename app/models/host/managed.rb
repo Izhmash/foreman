@@ -84,7 +84,7 @@ class Host::Managed < Host::Base
     allow :name, :diskLayout, :puppetmaster, :puppet_ca_server, :operatingsystem, :os, :environment, :ptable, :hostgroup,
       :url_for_boot, :hostgroup, :compute_resource, :domain, :ip, :ip6, :mac, :shortname, :architecture,
       :model, :certname, :capabilities, :provider, :subnet, :subnet6, :token, :location, :organization, :provision_method,
-      :image_build?, :pxe_build?, :otp, :realm, :nil?, :indent, :primary_interface,
+      :image_build?, :pxe_build?, :hybrid_build?, :otp, :realm, :nil?, :indent, :primary_interface,
       :provision_interface, :interfaces, :bond_interfaces, :bridge_interfaces, :interfaces_with_identifier,
       :managed_interfaces, :facts, :facts_hash, :root_pass, :sp_name, :sp_ip, :sp_mac, :sp_subnet, :use_image,
       :multiboot, :jumpstart_path, :install_path, :miniroot, :medium, :bmc_nic, :templates_used, :owner, :owner_type,
@@ -710,6 +710,10 @@ class Host::Managed < Host::Base
   def pxe_build?
     self.provision_method == 'build'
   end
+
+	def hybrid_build?
+		self.provision_method == 'hybrid'
+	end
 
   def validate_media?
     managed && pxe_build? && build?

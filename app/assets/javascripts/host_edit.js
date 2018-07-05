@@ -516,13 +516,32 @@ $(document).on('submit',"[data-submit='progress_bar']", function() {
 });
 
 function hybrid_provision_method_selected() {
-  $('div[id*=_provisioning]').hide();
+  /*$('div[id*=_provisioning]').hide();
   $('#hybrid_provisioning').show();
   //$('#image_selection select').attr('disabled', true);
   if ($('#provider').val() == 'Ovirt')
     $('#host_compute_attributes_template').attr('disabled', false);
   var image_options = $('#image_selection select');
   image_options.attr('disabled', false);
+  if ($('#provider').val() == 'Libvirt') {
+    tfm.computeResource.libvirt.imageSelected(image_options);
+  } else if ($('#provider').val() == 'Ovirt') {
+    var template_options = $('#host_compute_attributes_template');
+    if (template_options.length > 0) {
+      template_options.attr('disabled', true);
+      template_options.val(image_options.val());
+      tfm.computeResource.ovirt.templateSelected(image_options);
+    }
+  }*/
+
+  $('div[id*=_provisioning]').hide();
+  //$('#hybrid_provisioning').show();
+  $('#image_provisioning').show();
+  $('#network_provisioning').show();
+  $('#network_selection select').attr('disabled', true);
+  var image_options = $('#image_selection select');
+  image_options.attr('disabled', false);
+  $('#image_selection select').show();
   if ($('#provider').val() == 'Libvirt') {
     tfm.computeResource.libvirt.imageSelected(image_options);
   } else if ($('#provider').val() == 'Ovirt') {

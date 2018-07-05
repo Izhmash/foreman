@@ -241,7 +241,7 @@ module Orchestration::Compute
 
   def validate_compute_provisioning
     return true if compute_attributes.nil?
-    if image_build?
+    if image_build? || hybrid_build?
       return true if (compute_attributes[:image_id] || compute_attributes[:image_ref]).blank?
       img = find_image
       if img

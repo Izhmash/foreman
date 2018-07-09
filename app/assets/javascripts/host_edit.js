@@ -516,6 +516,7 @@ $(document).on('submit',"[data-submit='progress_bar']", function() {
 });
 
 function hybrid_provision_method_selected() {
+  $('div[id*=media_selection]').hide();
   $('div[id*=_provisioning]').hide();
   //$('#hybrid_provisioning').show();
   $('#image_provisioning').show();
@@ -540,6 +541,7 @@ $(document).on('change', '#host_provision_method_hybrid', hybrid_provision_metho
 function build_provision_method_selected() {
   $('div[id*=_provisioning]').hide();
   $('#network_provisioning').show();
+  $('div[id*=media_selection]').show();
   $('#image_selection select').attr('disabled', true);
   if ($('#provider').val() == 'Ovirt')
     $('#host_compute_attributes_template').attr('disabled', false);
@@ -548,6 +550,7 @@ $(document).on('change', '#host_provision_method_build', build_provision_method_
 
 function image_provision_method_selected() {
   $('div[id*=_provisioning]').hide();
+  $('div[id*=media_selection]').hide();
   $('#image_provisioning').show();
   $('#network_selection select').attr('disabled', true);
   var image_options = $('#image_selection select');

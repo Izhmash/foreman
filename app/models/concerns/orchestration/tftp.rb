@@ -56,16 +56,29 @@ module Orchestration::TFTP
   def generate_pxe_template(kind)
     # this is the only place we generate a template not via a web request
     # therefore some workaround is required to "render" the template.
-    @kernel = host.operatingsystem.kernel(host.arch)
-    @initrd = host.operatingsystem.initrd(host.arch)
-    if host.operatingsystem.respond_to?(:mediumpath)
-      @mediapath = host.operatingsystem.mediumpath(host)
-    end
 
-    # Xen requires additional boot files.
-    if host.operatingsystem.respond_to?(:xen)
-      @xen = host.operatingsystem.xen(host.arch)
-    end
+		# If hybrid building, do not generate the template variables
+		if host.hybrid_build?
+			@kernel = "Fill me in"
+			@initrd = "Fill me in"
+			if host.operatingsystem.respond_to?(:mediumpath)
+				@mediapath = "Fill me in"
+			end
+			if host.operatingsystem.respond_to?(:xen)
+				@xen = "Fill me in"
+			end
+		else
+			@kernel = host.operatingsystem.kernel(host.arch)
+			@initrd = host.operatingsystem.initrd(host.arch)
+			if host.operatingsystem.respond_to?(:mediumpath)
+				@mediapath = host.operatingsystem.mediumpath(host)
+			end
+		end
+
+			# Xen requires additional boot files.
+			if host.operatingsystem.respond_to?(:xen)
+				@xen = host.operatingsystem.xen(host.arch)
+			end
 
     # work around for ensuring that people can use @host as well, as tftp templates were usually confusing.
     @host = self.host
@@ -123,13 +136,16 @@ module Orchestration::TFTP
   def setTFTPBootFiles
     logger.info "Fetching required TFTP boot files for #{host.name}"
     valid = []
-    host.operatingsystem.pxe_files(host.medium, host.architecture, host).each do |bootfile_info|
-      for prefix, path in bootfile_info do
-        valid << each_unique_feasible_tftp_proxy do |proxy|
-          proxy.fetch_boot_file(:prefix => prefix.to_s, :path => path)
-        end
-      end
-    end
+
+		#if !host.hybrid_build?
+			host.operatingsystem.pxe_files(host.image, host.architecture, host).each do |bootfile_info|
+				for prefix, path in bootfile_info do
+					valid << each_unique_feasible_tftp_proxy do |proxy|
+						proxy.fetch_boot_file(:prefix => prefix.to_s, :path => path)
+					end
+				end
+			end
+		#end
     failure _("Failed to fetch boot files") unless valid.all?
     valid.all?
   end
@@ -162,7 +178,10 @@ module Orchestration::TFTP
       queue.create(:name => _("Deploy TFTP %{kind} config for %{host}") % {:kind => kind, :host => self}, :priority => 20, :action => [self, :setTFTP, kind])
     end
     return unless build
-    queue.create(:name => _("Fetch TFTP boot files for %s") % self, :priority => 25, :action => [self, :setTFTPBootFiles])
+		# Don't need to download any files if not using media
+		if !host.hybrid_build?
+			queue.create(:name => _("Fetch TFTP boot files for %s") % self, :priority => 25, :action => [self, :setTFTPBootFiles])
+		end
   end
 
   def queue_tftp_update

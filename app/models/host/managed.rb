@@ -88,7 +88,7 @@ class Host::Managed < Host::Base
       :provision_interface, :interfaces, :bond_interfaces, :bridge_interfaces, :interfaces_with_identifier,
       :managed_interfaces, :facts, :facts_hash, :root_pass, :sp_name, :sp_ip, :sp_mac, :sp_subnet, :use_image,
       :multiboot, :jumpstart_path, :install_path, :miniroot, :medium, :bmc_nic, :templates_used, :owner, :owner_type,
-      :ssh_authorized_keys, :pxe_loader
+      :ssh_authorized_keys, :pxe_loader, :image_name
   end
 
   scope :recent, lambda { |interval = Setting[:outofsync_interval]|
@@ -230,7 +230,7 @@ class Host::Managed < Host::Base
                           :presence => {:message => N_('should not be blank - consider setting a global or host group default')},
                           :if => Proc.new { |host| host.managed && (host.pxe_build? || host.hybrid_build?) && build? }
     validates :ptable_id, :presence => {:message => N_("can't be blank unless a custom partition has been defined")},
-                          :if => Proc.new { |host| host.managed && host.disk.empty? && !Foreman.in_rake? && (host.pxe_build? || host.hybrid_build?) && host.build? }
+                          :if => Proc.new { |host| host.managed && host.disk.empty? && !Foreman.in_rake? && host.pxe_build? && host.build? }
     validates :provision_method, :inclusion => {:in => Proc.new { self.provision_methods }, :message => N_('is unknown')}, :if => Proc.new {|host| host.managed?}
     validates :medium_id, :presence => true, :if => Proc.new { |host| host.validate_media? }
     validate :provision_method_in_capabilities

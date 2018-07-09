@@ -711,9 +711,9 @@ class Host::Managed < Host::Base
     self.provision_method == 'build'
   end
 
-	def hybrid_build?
-		self.provision_method == 'hybrid'
-	end
+  def hybrid_build?
+    self.provision_method == 'hybrid'
+  end
 
   def validate_media?
     managed && pxe_build? && build?

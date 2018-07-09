@@ -29,7 +29,7 @@ module Foreman::Model
     end
 
     def capabilities
-      [:build, :image, :new_volume, :hybrid]
+      [:build, :image, :new_volume]
     end
 
     def editable_network_interfaces?

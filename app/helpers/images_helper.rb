@@ -1,6 +1,6 @@
 module ImagesHelper
   def image_field(f, opts = {})
-    return unless @compute_resource.capabilities.include?(:image)
+    return unless !(@compute_resource.capabilities & [:image, :hybrid]).empty?
     images = @compute_resource.available_images
     if images.any?
       images.each { |image| image.name = image.id if image.name.nil? }

@@ -520,7 +520,7 @@ function hybrid_provision_method_selected() {
   $('div[id*=_provisioning]').hide();
   //$('#hybrid_provisioning').show();
   $('#image_provisioning').show();
-  $('#network_provisioning').show();
+  //$('#network_provisioning').show();
   $('#network_selection select').attr('disabled', false);
   var image_options = $('#image_selection select');
   image_options.attr('disabled', false);

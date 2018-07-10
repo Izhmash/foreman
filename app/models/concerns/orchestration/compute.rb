@@ -241,7 +241,7 @@ module Orchestration::Compute
 
   def validate_compute_provisioning
     return true if compute_attributes.nil?
-		if hybrid_build?
+    if hybrid_build?
       img = find_image
       if img
         self.image = img
@@ -249,8 +249,7 @@ module Orchestration::Compute
         failure(_("Selected image does not belong to %s") % compute_resource)
         return false
       end
-		end
-    if image_build?
+    elsif image_build?
       return true if (compute_attributes[:image_id] || compute_attributes[:image_ref]).blank?
       img = find_image
       if img

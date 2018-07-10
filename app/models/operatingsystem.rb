@@ -196,9 +196,9 @@ class Operatingsystem < ApplicationRecord
   end
 
   def pxe_files(medium, arch, host = nil)
-		boot_files_uri(medium, arch, host).collect do |img|
-			{ pxe_prefix(arch).to_sym => img.to_s}
-		end
+    boot_files_uri(medium, arch, host).collect do |img|
+      { pxe_prefix(arch).to_sym => img.to_s}
+    end
   end
 
   def kernel(arch)

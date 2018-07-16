@@ -516,11 +516,12 @@ $(document).on('submit',"[data-submit='progress_bar']", function() {
 });
 
 function hybrid_provision_method_selected() {
-  $('div[id*=media_selection]').hide();
-  $('div[id*=_provisioning]').hide();
+  //$('div[id*=_provisioning]').hide();
   //$('#hybrid_provisioning').show();
   $('#image_provisioning').show();
-  //$('#network_provisioning').show();
+  $('#network_provisioning').show();
+  $('div[id*=media_selection]').hide();
+  $('div[id*=custom_ptable]').hide();
   $('#network_selection select').attr('disabled', false);
   var image_options = $('#image_selection select');
   image_options.attr('disabled', false);

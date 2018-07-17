@@ -377,6 +377,7 @@ function os_selected(element){
       $('#media_select').html(request);
       reload_host_params();
       reload_puppetclass_params();
+      hybrid_hide_build_fields()
     }
   });
   update_provisioning_image();
@@ -516,8 +517,6 @@ $(document).on('submit',"[data-submit='progress_bar']", function() {
 });
 
 function hybrid_provision_method_selected() {
-  //$('div[id*=_provisioning]').hide();
-  //$('#hybrid_provisioning').show();
   $('#image_provisioning').show();
   $('#network_provisioning').show();
   $('div[id*=media_selection]').hide();
@@ -538,6 +537,15 @@ function hybrid_provision_method_selected() {
   }
 }
 $(document).on('change', '#host_provision_method_hybrid', hybrid_provision_method_selected);
+
+function hybrid_hide_build_fields() {
+  if ($('#host_provision_method_hybrid')[0].checked) {
+    $('#network_provisioning').show();
+    $('div[id*=media_selection]').hide();
+    $('div[id*=custom_ptable]').hide();
+  }
+}
+$(document).on('change', '#host_operatingsystem_id', hybrid_hide_build_fields);
 
 function build_provision_method_selected() {
   $('div[id*=_provisioning]').hide();
